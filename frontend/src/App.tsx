@@ -1,7 +1,8 @@
 import React from 'react';import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css'
 import LoginPage from './pages/LoginPage';
-import PointPage from "./pages/PointPage";
+import CollaboratorTimeRegister from "./pages/CollaboratorTimeRegister";
 import { I18nextProvider } from 'react-i18next';
 import i18n from './plugins/i18n';
 
@@ -11,7 +12,7 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/:collaboratorId" element={<PointPage />} />
+            <Route path="/:collaboratorId" element={<CollaboratorTimeRegister />} />
           </Routes>
         </Router>
       </I18nextProvider>

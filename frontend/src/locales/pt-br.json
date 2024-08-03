@@ -2,9 +2,34 @@
   "pages": {
     "login": {
       "primary-title": "Ponto",
-      "secondary-title": "Ilumeo",
+      "secondary-title": " Ilumeo",
       "userCode": "Código do usuário",
-      "confirm": "Confirmar"
+      "confirm": "Confirmar",
+      "placeholder": "4SXXFMF"
+    },
+    "timerRegister": {
+        "entry": "Entrada",
+        "exit": "Saída",
+        "registerEntry": "Registrar Entrada",
+        "registerExit": "registrar Saída"
+    },
+    "workHoursDisplay": {
+      "title": "Horas de hoje"
+    },
+    "registerPoints": {
+      "title": "Relógio de ponto"
     }
+  },
+  "components":{
+    "workHoursModal": {
+      "title": "Registros de entrada e saída",
+      "notData": "Sem dados de entrada e saída registrados."
+    },
+    "listWorkDays": {
+      "title": "Dias anteriores"
+    }
+  },
+  "buttons": {
+    "close": "Fechar"
   }
 }

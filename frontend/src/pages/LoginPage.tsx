@@ -25,20 +25,25 @@ const LoginPage: React.FC = () => {
     return (
         <Container className="mt-5">
             <Row className="justify-content-md-center">
-                <Col md={6}>
-                    <h1 className="text-center">{t('login')}</h1>
+                <Col md={6} className="shadow p-4">
+                    <div className="d-flex flex-row justify-content-center">
+                        <h1 className="text-center pe-3">{t('pages.login.primary-title')}</h1>
+                        <h1 className="text-center fw-bold">{t('pages.login.secondary-title')}</h1>
+                    </div>
+
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="userId">
-                            <Form.Label>{t('pages.login.userCode')}:</Form.Label>
+                        <Form.Label>{t('pages.login.userCode')}:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={userId}
                                 onChange={(e) => setUserId(e.target.value)}
-                                placeholder={t('pages.login.userCode')}
+                                placeholder={t('pages.login.placeholder')}
                             />
                         </Form.Group>
                         {error && <Alert variant="danger">{error}</Alert>}
-                        <Button type="submit" variant="warning" className="w-100 mt-3">{t('pages.login.confirm')}</Button>
+                        <Button type="submit"
+                                className="w-100 point-button mt-3">{t('pages.login.confirm')}</Button>
                     </Form>
                 </Col>
             </Row>
