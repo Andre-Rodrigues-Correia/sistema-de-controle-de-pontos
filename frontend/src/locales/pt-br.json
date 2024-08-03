@@ -1,0 +1,10 @@
+{
+  "pages": {
+    "login": {
+      "primary-title": "Ponto",
+      "secondary-title": "Ilumeo",
+      "userCode": "Código do usuário",
+      "confirm": "Confirmar"
+    }
+  }
+}
