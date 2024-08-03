@@ -1,28 +1,43 @@
 import { Request, Response } from 'express';
 import { WorkedHoursService } from '../services/WorkedHoursService';
 
-const workedHoursService = new WorkedHoursService();
+export class WorkedHoursController {
+    private workedHoursService: WorkedHoursService;
 
-export const upsertWorkHours = async (req: Request, res: Response) => {
-    const { collaboratorId } = req.params;
-    const { date, hoursWorked } = req.body;
-
-    try {
-        const workedHours = await workedHoursService.createOrUpdateWorkHours(collaboratorId, date, hoursWorked);
-        return res.status(200).json(workedHours);
-    } catch (error: unknown) {
-        return res.status(500).json({ error: 'Internal server error' });
+    constructor(workedHoursService: WorkedHoursService) {
+        this.workedHoursService = workedHoursService;
     }
-};
 
-export const getWorkHoursByEmployee = async (req: Request, res: Response) => {
-    const { employeeId } = req.params;
+    public createWorkHours = async (req: Request, res: Response): Promise<Response> => {
+        const { collaboratorId } = req.params;
+        const { date, hoursWorked } = req.body;
 
-    try {
-        const workedHours = await workedHoursService.getWorkHoursByCollaborator(employeeId);
+        try {
+            const workedHours = await this.workedHoursService.createWorkHours(collaboratorId, date, hoursWorked);
+            return res.status(201).json(workedHours);
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    };
 
-        return res.status(200).json(workedHours);
-    } catch (error: unknown) {
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-};
+    public updateInOrOut = async (req: Request, res: Response): Promise<Response> => {
+        const { collaboratorId } = req.params;
+        try {
+            const updatedWorkHours = await this.workedHoursService.updateInOrOut(collaboratorId, req.body);
+            return res.status(200).json(updatedWorkHours);
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    };
+
+    public getWorkHoursByEmployee = async (req: Request, res: Response): Promise<Response> => {
+        const { collaboratorId } = req.params;
+
+        try {
+            const workedHours = await this.workedHoursService.getWorkHoursByCollaborator(collaboratorId);
+            return res.status(200).json(workedHours);
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    };
+}

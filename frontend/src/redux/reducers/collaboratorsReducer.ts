@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-interface FuncionarioState {
+interface CollaboratorState {
     horasTrabalhadasHoje: number;
     horasTrabalhadasSemana: {
         [key: string]: number;
     };
 }
 
-const initialState: FuncionarioState = {
+const initialState: CollaboratorState = {
     horasTrabalhadasHoje: 0,
     horasTrabalhadasSemana: {},
 };

@@ -1,13 +1,17 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import workHoursRoutes from "./routes/workHoursRoutes";
+import cors from 'cors'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors({
+    origin: '*', // Ajuste para o domínio do frontend
+    allowedHeaders: '*'
+}));
 app.use('/api', workHoursRoutes);
 
 

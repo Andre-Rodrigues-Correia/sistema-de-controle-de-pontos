@@ -1,22 +1,24 @@
+// LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Button, Container, Form, Row, Col, Alert } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const LoginPage: React.FC = () => {
+    const { t } = useTranslation();
     const [userId, setUserId] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-    const { t } = useTranslation();
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
         if (userId.trim() === '') {
-            setError('User ID is required');
+            setError(t('userId') + ' ' + t('is_required'));
             return;
         }
-
+        
         navigate(`/${userId}`);
     };
 
@@ -24,14 +26,10 @@ const LoginPage: React.FC = () => {
         <Container className="mt-5">
             <Row className="justify-content-md-center">
                 <Col md={6}>
-                    <div className="d-flex flex-row justify-content-center align-items-center">
-                        <h1 className="text-center me-3">{t('pages.login.primary-title')}</h1>
-                        <h1 className="text-center fw-bold">{t('pages.login.secondary-title')}</h1>
-                    </div>
-
-
-                    <Form onSubmit={handleSubmit} className="mt-5">
+                    <h1 className="text-center">{t('login')}</h1>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="userId">
+                            <Form.Label>{t('pages.login.userCode')}:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={userId}

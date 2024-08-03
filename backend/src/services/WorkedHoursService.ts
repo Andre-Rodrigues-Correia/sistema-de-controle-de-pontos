@@ -3,27 +3,31 @@ import models from '../models';
 const { WorkedHours } = models;
 
 export class WorkedHoursService {
-    async createOrUpdateWorkHours(collaboratorId: string, date: string, hoursWorked: string) {
+    public async createWorkHours(collaboratorId: string, date: string, hoursWorked: string) {
         let workHours = await WorkedHours.findOne({ where: { collaboratorId, date } });
 
         if (!workHours) {
-            workHours = await WorkedHours.create({ collaboratorId, date, hoursWorked });
-            return workHours
+            workHours = await WorkedHours.create({ collaboratorId, date, hoursWorked, inOrOut: [] });
         }
 
-        workHours.hoursWorked = hoursWorked;
+        return workHours;
+    }
+
+    public async updateInOrOut(collaboratorId: string, collaborator: any) {
+        console.log(collaborator)
+        const workHours = await WorkedHours.findOne({ where: { collaboratorId, date: collaborator.date } });
+    console.log(workHours)
+        if (!workHours) {
+            throw new Error('Work hours entry not found');
+        }
+
+        workHours.inOrOut = [...collaborator.inOrOut];
         await workHours.save();
 
         return workHours;
     }
 
-    async getWorkHoursByCollaborator(collaboratorId: string) {
-        const workHours = await WorkedHours.findAll({ where: { collaboratorId } });
-
-        if (workHours.length === 0) {
-            throw new Error('No work hours found for this employee');
-        }
-
-        return workHours;
+    public async getWorkHoursByCollaborator(collaboratorId: string) {
+        return await WorkedHours.findAll({ where: { collaboratorId } });
     }
 }

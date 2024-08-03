@@ -1,83 +1,86 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import apiClient from "../plugins/apiClient";
+import WorkHoursDisplay from "../components/WorkHoursDisplay";
+import TimeRegister from "../components/TimeRegister";
+import { useParams } from "react-router-dom";
+import moment from "moment";
 
-// Definindo a estrutura do objeto Funcionário
-interface Funcionario {
-    horasTrabalhadasHoje: number;
-    horasTrabalhadasSemana: {
-        [key: string]: number;
-    };
+interface Collaborator {
+    id: number;
+    collaboratorId: string;
+    date: string;
+    hoursWorked: string[];
+    inOrOut: string[]
 }
 
-const RegistroHorario: React.FC = () => {
-    const [tempoTrabalhado, setTempoTrabalhado] = useState<number>(0); // Tempo trabalhado em segundos
-    const [isWorking, setIsWorking] = useState<boolean>(false); // Indica se o funcionário está trabalhando
-    const [ultimoRegistro, setUltimoRegistro] = useState<number | null>(null); // Último valor do temporizador
-
-    const temporizadorRef = useRef<number | null>(null); // Referência para o temporizador
+const WorkHours: React.FC = () => {
+    const [hoursArray, setHoursArray] = useState<string[]>([]);
+    const { collaboratorId } = useParams();
+    const [workDay, setWorkDay] = useState<Collaborator | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (isWorking) {
-            temporizadorRef.current = window.setInterval(() => {
-                setTempoTrabalhado(prev => prev + 1);
-            }, 1000);
-        } else {
-            if (temporizadorRef.current) {
-                clearInterval(temporizadorRef.current);
-            }
-        }
-
-        return () => {
-            if (temporizadorRef.current) {
-                clearInterval(temporizadorRef.current);
+        const fetchClientData = async () => {
+            try {
+                const response = await apiClient.get(`/api/worked-hours/${collaboratorId}`);
+                await verifyAndSetWorkDay(response.data);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
             }
         };
-    }, [isWorking]);
 
-    const registrarHorario = () => {
-        if (isWorking) {
-            // Registrar a saída
-            setUltimoRegistro(tempoTrabalhado);
-            setIsWorking(false);
-        } else {
-            // Registrar a entrada
-            setIsWorking(true);
+        fetchClientData();
+    }, [collaboratorId]);
+
+    const handleTimeRegistered = async (newTime: string) => {
+        setHoursArray(prevHoursArray => [...prevHoursArray, newTime]);
+        const newData = {
+            date: moment().format("YYYY-MM-DD").toString(),
+            hoursWorked: "00:00:00",
+            inOrOut: [...hoursArray, newTime]
+        }
+        await apiClient.put(`/api/worked-hours/${collaboratorId}`, newData);
+    };
+
+    const getToday = () => {
+        return moment().format("YYYY-MM-DD").toString();
+    };
+
+    const verifyAndSetWorkDay = async (collaboratorData: Collaborator[]) => {
+        const today = getToday();
+        let isWorkToday = false;
+        collaboratorData.forEach((c) => {
+            if (c.date === today) {
+                setWorkDay(c);
+                setHoursArray(c.inOrOut);
+                isWorkToday = true;
+            }
+        });
+
+        if (!isWorkToday) {
+            const response = await apiClient.post(`/api/worked-hours/${collaboratorId}`, {
+                date: moment().format("YYYY-MM-DD").toString(),
+                hoursWorked: "00:00:00",
+                inOrOut: []
+            });
+            setWorkDay(response.data);
+            setHoursArray(response.data.inOrOut);
         }
     };
 
-    const formatarTempo = (segundos: number): string => {
-        const horas = Math.floor(segundos / 3600);
-        const minutos = Math.floor((segundos % 3600) / 60);
-        const segundosRestantes = segundos % 60;
-        return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundosRestantes).padStart(2, '0')}`;
-    };
-
-    const salvarFuncionario = () => {
-        if (ultimoRegistro !== null) {
-            const hoje = new Date().toLocaleDateString('pt-BR', { weekday: 'long' }); // Exemplo: "segunda-feira"
-            const funcionario: Funcionario = {
-                horasTrabalhadasHoje: ultimoRegistro / 3600, // Convertendo segundos para horas
-                horasTrabalhadasSemana: {
-                    [hoje]: (ultimoRegistro / 3600) // Exemplo para o dia da semana atual
-                }
-            };
-
-            console.log('Dados do Funcionário:', funcionario);
-        }
-    };
-
-    useEffect(() => {
-        salvarFuncionario();
-    }, [ultimoRegistro]);
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
 
     return (
-        <div>
-            <h1>Registro de Horário</h1>
-            <p>Tempo Trabalhado Hoje: {formatarTempo(tempoTrabalhado)}</p>
-            <button onClick={registrarHorario}>
-                {isWorking ? 'Registrar Saída' : 'Registrar Entrada'}
-            </button>
+        <div className="App">
+            <h1>Registro de Ponto</h1>
+            <WorkHoursDisplay hoursArray={hoursArray} />
+            <TimeRegister onTimeRegistered={handleTimeRegistered} hoursArray={hoursArray} />
         </div>
     );
 };
 
-export default RegistroHorario;
+export default WorkHours;

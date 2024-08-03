@@ -6,6 +6,8 @@ class WorkedHours extends Model {
     public collaboratorId!: string;
     public date!: Date;
     public hoursWorked!: string;
+    public status!: 'in' | 'out';
+    public inOrOut!: string[]; // Novo campo adicionado
 }
 
 WorkedHours.init({
@@ -25,6 +27,10 @@ WorkedHours.init({
     hoursWorked: {
         type: DataTypes.TIME,
         allowNull: false
+    },
+    inOrOut: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true
     }
 }, {
     sequelize,

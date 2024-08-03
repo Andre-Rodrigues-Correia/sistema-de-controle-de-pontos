@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import {getWorkHoursByEmployee, upsertWorkHours} from '../controllers/workHoursController';
+import { WorkedHoursService } from '../services/WorkedHoursService';
+import { WorkedHoursController } from '../controllers/workHoursController';
 
 const router = Router();
 
-router.post('/worked-hours/:collaboratorId', upsertWorkHours);
-router.get('/worked-hours/:collaboratorId', getWorkHoursByEmployee);
+const workedHoursService = new WorkedHoursService();
+
+const workedHoursController = new WorkedHoursController(workedHoursService);
+
+router.post('/worked-hours/:collaboratorId', workedHoursController.createWorkHours);
+router.put('/worked-hours/:collaboratorId', workedHoursController.updateInOrOut);
+router.get('/worked-hours/:collaboratorId', workedHoursController.getWorkHoursByEmployee);
 
 export default router;
