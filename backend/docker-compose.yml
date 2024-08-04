@@ -17,8 +17,8 @@ services:
       DB_USER: postgres
       DB_PASS: postgres
       DB_NAME: worked_hours
-      PORT: 3000
+      PORT: 8080
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db

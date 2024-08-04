@@ -41,7 +41,6 @@ const WorkHoursPage: React.FC = () => {
         } else {
             const response = await apiClient.post(`/api/worked-hours/${collaboratorId}`, {
                 date: today,
-                hoursWorked: "00:00:00",
                 inOrOut: []
             });
             setHoursArray(response.data.inOrOut);
@@ -52,7 +51,6 @@ const WorkHoursPage: React.FC = () => {
         setHoursArray(prev => [...prev, newTime]);
         const newData = {
             date: moment().format("YYYY-MM-DD"),
-            hoursWorked: "00:00:00",
             inOrOut: [...hoursArray, newTime]
         };
         await apiClient.put(`/api/worked-hours/${collaboratorId}`, newData);

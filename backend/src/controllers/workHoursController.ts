@@ -10,10 +10,10 @@ export class WorkedHoursController {
 
     public createWorkHours = async (req: Request, res: Response): Promise<Response> => {
         const { collaboratorId } = req.params;
-        const { date, hoursWorked } = req.body;
+        const { date } = req.body;
 
         try {
-            const workedHours = await this.workedHoursService.createWorkHours(collaboratorId, date, hoursWorked);
+            const workedHours = await this.workedHoursService.createWorkHours(collaboratorId, date);
             return res.status(201).json(workedHours);
         } catch (error) {
             return res.status(500).json({ error: 'Internal server error' });

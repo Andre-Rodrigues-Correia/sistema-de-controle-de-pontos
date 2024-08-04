@@ -3,11 +3,11 @@ import models from '../models';
 const { WorkedHours } = models;
 
 export class WorkedHoursService {
-    public async createWorkHours(collaboratorId: string, date: string, hoursWorked: string) {
+    public async createWorkHours(collaboratorId: string, date: string) {
         let workHours = await WorkedHours.findOne({ where: { collaboratorId, date } });
 
         if (!workHours) {
-            workHours = await WorkedHours.create({ collaboratorId, date, hoursWorked, inOrOut: [] });
+            workHours = await WorkedHours.create({ collaboratorId, date, inOrOut: [] });
         }
 
         return workHours;
