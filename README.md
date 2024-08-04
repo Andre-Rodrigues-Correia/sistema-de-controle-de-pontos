@@ -144,7 +144,7 @@ No frontend, criei duas views: uma para login e outra para o registro dos pontos
 
 **Descrição:** Identifiquei um bug relacionado à atualização do timer. Em alguns momentos, são realizadas duas requisições ao backend, sendo que uma delas envia algumas informações vazias. Isso gera uma visualização incorreta do tempo de trabalho.
 
-**Causa:** Isso ocorre devido à mudança de estado de uma variável, gerando múltiplas renderizações.
+**Possível Causa:** Isso pode esta ocorrendo devido à mudança de estado de uma variável ou por conta do tempo de inserção de novos registros no banco de dados, gerando múltiplas renderizações ou dados inconsisentes.
 
 **Solução Proposta:** Identificar qual variável está causando essa múltipla renderização e ajustar. Além disso, implementar Redux na aplicação para gerenciar melhor os estados globais.
 
