@@ -14,6 +14,8 @@ Importante: Devido ao uso do plano gratuito no Render e Vercel, o servidor fica 
 Frontend: https://sistema-de-controle-de-pontos.vercel.app/
 Backend: https://sistema-de-controle-de-pontos.onrender.com/
 
+Protótipo no Figma: https://www.figma.com/design/Krnz9hBdkGoOyYmL2zl0J6/Ilumeo---Teste-Fullsatck
+
 ### Tecnologias Utilizadas
 - **Node.Js**
 - **React.JS**
@@ -131,6 +133,25 @@ No frontend, criei duas views: uma para login e outra para o registro dos pontos
 
 ### Timer atualizado
 ![Login do colaborador](./docs/gifs/timer.gif)
+
+### Responsividade
+![Responsividade](./docs/gifs/responsivo.gif)
+
+
+## Notas sobre o Teste
+
+### Problema Conhecido
+
+**Descrição:** Identifiquei um bug relacionado à atualização do timer. Em alguns momentos, são realizadas duas requisições ao backend, sendo que uma delas envia algumas informações vazias. Isso gera uma visualização incorreta do tempo de trabalho.
+
+**Causa:** Isso ocorre devido à mudança de estado de uma variável, gerando múltiplas renderizações.
+
+**Solução Proposta:** Identificar qual variável está causando essa múltipla renderização e ajustar. Além disso, implementar Redux na aplicação para gerenciar melhor os estados globais.
+
+### Observações
+
+O erro não gera grande impacto na aplicação, pois não ocorre a todo momento e, por ter sido identificado apenas no final dos testes, não terei tempo de aplicar as correções até o prazo determinado. Por isso, deixo essa nota de teste informando sobre o problema conhecido.
+
 
 Em relação aos testes, implementei testes nos controllers e services da aplicação. No entanto, optei por não implementá-los no frontend, pois ainda estou estudando e aprendendo sobre testes no frontend.
 
