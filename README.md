@@ -12,9 +12,12 @@ O deploy do backend da aplicação foi realizado no Render, que oferece uma estr
 Importante: Devido ao uso do plano gratuito no Render e Vercel, o servidor fica em stand by e só é ativado com a primeira requisição. Portanto, as ações iniciais na aplicação podem demorar mais do que o habitual.
 
 Frontend: https://sistema-de-controle-de-pontos.vercel.app/
+
 Backend: https://sistema-de-controle-de-pontos.onrender.com/
 
 Protótipo no Figma: https://www.figma.com/design/Krnz9hBdkGoOyYmL2zl0J6/Ilumeo---Teste-Fullsatck
+
+Para testar a aplicação com resgitro em dias anteriores utilize Código do usuário: `4sxxfmf` 
 
 ### Tecnologias Utilizadas
 - **Node.Js**
